@@ -1,10 +1,10 @@
 import $ from 'jquery';
 
-export const CustomerService = {
-    getCustomersMedium() {
+export const DatosServis = {
+    obtenerDatosServis() {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: '/fn_traerDatosTrabajadores',
+                url: '/fn_traerDatosServis',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {

@@ -32,7 +32,7 @@ onMounted(() => {
         </template>
 
         <div class="py-8">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto md:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="px-4 py-8">
                         <img src="/img/InicioAbanico.png" alt="" class="m-auto w-56 h-56 rounded-full mb-4 object-cover">

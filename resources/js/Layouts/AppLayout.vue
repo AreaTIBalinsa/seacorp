@@ -37,19 +37,19 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-base">
                                     Inicio
                                 </NavLink>
-                                <NavLink :href="route('personal.index')" :active="route().current('personal.*')">
+                                <NavLink :href="route('personal.index')" :active="route().current('personal.*')" class="text-base">
                                     Personal
                                 </NavLink>
-                                <NavLink :href="route('reportes.index')" :active="route().current('reportes.*')">
+                                <NavLink :href="route('reportes.index')" :active="route().current('reportes.*')" class="text-base">
                                     Reportes
                                 </NavLink>
-                                <NavLink :href="route('precios.index')" :active="route().current('precios.*')">
+                                <NavLink :href="route('precios.index')" :active="route().current('precios.*')" class="text-base">
                                     Precios
                                 </NavLink>
-                                <NavLink :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')">
+                                <NavLink :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')" class="text-base">
                                     Usuarios
                                 </NavLink>
                             </div>
