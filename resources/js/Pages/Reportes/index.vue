@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import ReporteDiario from '@/Pages/Reportes/reporteDiario.vue';
 import ReporteSemanal from '@/Pages/Reportes/reporteSemanal.vue';
 import Button from 'primevue/button';
+import Card from 'primevue/card';
 import { ref } from 'vue';
 
 const mostrarReporteDiario = ref(false);
@@ -62,10 +63,39 @@ const ocultarReportes = () => {
                         </div>
                         <!-- ==================== -->
 
-                        <!-- Botones para elegir el reporte -->
-                        <div v-if="!mostrarReporteDiario && !mostrarReporteSemanal && !cargando" class="flex justify-center gap-4">
-                            <button @click="mostrarDiario" class="px-4 py-2 bg-blue-500 text-white rounded">Reporte Diario</button>
-                            <button @click="mostrarSemanal" class="px-4 py-2 bg-green-500 text-white rounded">Reporte Semanal</button>
+                        <div v-if="!mostrarReporteDiario && !mostrarReporteSemanal && !cargando" class="flex justify-evenly gap-4 flex-wrap">
+                            <Card style="width: 25rem; overflow: hidden">
+                                <template #header>
+                                    <img alt="user header" src="/img/abanico1.jpeg" style="height: 220px !important; width: 400px !important; object-fit: cover;"/>
+                                </template>
+                                <template #title>Reporte Diario</template>
+                                <template #content>
+                                    <p class="m-0">
+                                        Este informe abarca las operaciones diarias, que incluye peso total, precios de cada servicio, los totales procesados y el total a pagar por el producto procesado a cada colaborador.
+                                    </p>
+                                </template>
+                                <template #footer>
+                                    <div class="flex gap-4 mt-1">
+                                        <Button label="Ir a Reporte Diario" class="w-full" @click="mostrarDiario" severity="info"/>
+                                    </div>
+                                </template>
+                            </Card>
+                            <Card style="width: 25rem; overflow: hidden">
+                                <template #header>
+                                    <img alt="user header" src="/img/abanico3.jpeg" style="height: 220px !important; width: 400px !important; object-fit: cover;" />
+                                </template>
+                                <template #title>Reporte Semanal</template>
+                                <template #content>
+                                    <p class="m-0">
+                                        Este informe abarca las operaciones realizadas de lunes a viernes, incluyendo el peso total procesado, los precios por servicio, el volumen acumulado de producción y el total a pagar a cada colaborador por la semana.
+                                    </p>
+                                </template>
+                                <template #footer>
+                                    <div class="flex gap-4 mt-1">
+                                        <Button label="Ir a Reporte Semanal" class="w-full" @click="mostrarSemanal" severity="success"/>
+                                    </div>
+                                </template>
+                            </Card>
                         </div>
 
                         <!-- Mostrar Reporte Diario -->
@@ -101,5 +131,9 @@ const ocultarReportes = () => {
 @keyframes l7 {
   50%  {background-position: 10px 15px,-10px 12px,15px 8px}
   100% {background-position: 20px 20px,-20px 10px,20px 0px}
+}
+.p-card-body{
+    height: 100%;
+    justify-content: space-between;
 }
 </style>
