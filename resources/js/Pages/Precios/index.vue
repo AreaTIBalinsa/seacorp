@@ -137,8 +137,8 @@ const fn_guardarPrecio = () => {
                                     </IconField>
                                 </div>
                             </template>
-                            <template #empty> No se encontraron trabajadores.</template>
-                            <template #loading>Cargando datos de trabajadores. Por favor espere. </template>
+                            <template #empty> No se encontraron precios.</template>
+                            <template #loading>Cargando precios. Por favor espere. </template>
                             <Column header="Nombre Servis" field="nombreGrupo" sortable headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
                                     <div class="p-3 w-full">
