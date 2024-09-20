@@ -19,5 +19,7 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     </body>
 </html>

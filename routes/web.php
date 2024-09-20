@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\ReporteController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -62,3 +63,5 @@ Route::middleware([
 Route::get('/fn_traerDatosTrabajadores', [PersonalController::class, 'traerDatosTrabajadores']);
 Route::get('/fn_traerDatosServis', [PersonalController::class, 'traerDatosServis']);
 Route::get('/fn_traerCodigoPersonal', [PersonalController::class, 'traerCodigoPersonal']);
+Route::get('/fn_traerDatosReporteDiario', [ReporteController::class, 'traerDatosReporteDiario']);
+Route::get('/fn_traerPreciosServis', [ReporteController::class, 'traerPreciosServis']);

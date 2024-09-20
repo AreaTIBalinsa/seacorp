@@ -22,7 +22,7 @@ const logout = () => {
     <div>
         <Head :title="title" />
 
-        <div class="min-h-[92vh] md:min-h-[95vh] bg-gray-100">
+        <div class="min-h-[calc(100vh-50px)] bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,7 +193,7 @@ const logout = () => {
                 <slot />
             </main>
         </div>
-        <footer class="h-[8vh] md:h-[5vh] flex justify-center items-center font-medium text-gray-500 text-sm bg-white">
+        <footer class="h-[50px] flex justify-center items-center font-medium text-gray-500 text-sm bg-white">
             <p class="text-center">
                 Copyright &copy; 2024 - Industrias Balinsa, <b>Todos los Derechos Reservados.</b>
             </p>
