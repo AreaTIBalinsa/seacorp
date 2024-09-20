@@ -59,6 +59,7 @@ onMounted(() => {
                     <div class="px-4 py-8">
                         <div class="flex justify-center md:justify-between items-center flex-wrap gap-4">
                             <h2 class="font-bold text-xl w-full md:w-auto">Lista de Usuarios</h2>
+                            <Button icon="fa-solid fa-user-plus" class="w-full md:w-auto" label="Agregar Personal" as="a" href="/listarusuarios/create"/>
                         </div>
                         <DataTable id="tablaUsuarios" v-model:filters="filters" stateStorage="session" stateKey="dt-state-demo-session" :value="filteredCustomers" paginator paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                         currentPageReportTemplate="{first} a {last} de {totalRecords}" :rows="10" :rowsPerPageOptions="[10, 20, 50]" :loading="loading" removableSort class="text-sm">

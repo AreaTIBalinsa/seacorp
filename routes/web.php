@@ -28,6 +28,14 @@ Route::redirect('/', '/login');
 //     ]);
 // })->name('register');
 
+// Importante si quieres crear roles y permisos
+Route::middleware(['auth:web'])->group(function () {
+    Route::resource('/ListarUsuarios', UsuariosController::class);
+    // Con esto puedes crear permisos y roles
+    // Route::resource('roles', RoleController::class);
+    // Route::resource('permisos', PermisoController::class);
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -65,6 +73,10 @@ Route::middleware([
         return Inertia::render('Personal/create');
     })->name('personal.create');
 
+    Route::get('/listarusuarios/create', function () {
+        return Inertia::render('ListarUsuarios/create');
+    })->name('listarusuarios.create');
+
     Route::get('/personal/edit-personal', [PersonalController::class, 'edit'])->name('personal.edit-personal');
     Route::put('/personal/update/{idEmpleado}', [PersonalController::class, 'update'])->name('personal.update');
     Route::post('/personal/store', [PersonalController::class, 'store'])->name('personal.store');
@@ -82,3 +94,5 @@ Route::middleware([
     Route::get('/fn_traerPreciosServis', [PreciosController::class, 'traerPreciosServis']);
     Route::get('/fn_guardarNuevoPrecioServis', [PreciosController::class, 'guardarNuevoPrecioServis']);
 });
+
+route::post('/fn_registrarDatosdeUsuario', [UsuariosController::class, 'store'])->name('fn_registrarDatosdeUsuario');
