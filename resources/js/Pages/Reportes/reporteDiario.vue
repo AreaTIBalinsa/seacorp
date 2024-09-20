@@ -30,7 +30,7 @@ function fn_traerDatosReporteDiario(fecha, grupo){
     cargando.value = true;
 
     $.ajax({
-        url: '/fn_traerPreciosServis',
+        url: '/fn_traerPreciosServisGrupo',
         method: 'GET',
         data: {
             grupo: grupo

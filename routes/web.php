@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\PreciosController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -64,4 +65,6 @@ Route::get('/fn_traerDatosTrabajadores', [PersonalController::class, 'traerDatos
 Route::get('/fn_traerDatosServis', [PersonalController::class, 'traerDatosServis']);
 Route::get('/fn_traerCodigoPersonal', [PersonalController::class, 'traerCodigoPersonal']);
 Route::get('/fn_traerDatosReporteDiario', [ReporteController::class, 'traerDatosReporteDiario']);
-Route::get('/fn_traerPreciosServis', [ReporteController::class, 'traerPreciosServis']);
+Route::get('/fn_traerPreciosServisGrupo', [ReporteController::class, 'traerPreciosServisGrupo']);
+Route::get('/fn_traerPreciosServis', [PreciosController::class, 'traerPreciosServis']);
+Route::get('/fn_guardarNuevoPrecioServis', [PreciosController::class, 'guardarNuevoPrecioServis']);

@@ -34,7 +34,7 @@ class ReporteController extends Controller
         return response()->json($datos);
     }
 
-    public function traerPreciosServis(Request $request){
+    public function traerPreciosServisGrupo(Request $request){
         $grupo = $request->input('grupo');
 
         $datos = DB::select('

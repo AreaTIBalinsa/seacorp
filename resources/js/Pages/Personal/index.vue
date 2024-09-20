@@ -75,7 +75,7 @@ onMounted(() => {
     });
 });
 
-const onRowDoubleClick = (data) => {
+const fn_extraerDatosEditarPersonal = (data) => {
     router.get(route('personal.edit-personal'), { idEmpleado: data.idEmpleado });
 };
 
@@ -114,14 +114,14 @@ const onRowDoubleClick = (data) => {
                             <template #loading>Cargando datos de trabajadores. Por favor espere. </template>
                             <Column header="Codigo" field="codigo" sortable headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
-                                    <div @dblclick="onRowDoubleClick(data)" class="cursor-pointer">
+                                    <div @dblclick="fn_extraerDatosEditarPersonal(data)" class="cursor-pointer">
                                         {{ data.codigo }}
                                     </div>
                                 </template>
                             </Column>
                             <Column header="Apellidos y Nombres" field="nombreCompleto" sortable headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
-                                    <div @dblclick="onRowDoubleClick(data)" class="cursor-pointer">
+                                    <div @dblclick="fn_extraerDatosEditarPersonal(data)" class="cursor-pointer">
                                         {{ data.nombreCompleto }}
                                     </div>
                                 </template>
@@ -148,7 +148,7 @@ const onRowDoubleClick = (data) => {
                             </Column>
                             <Column header="Acciones" headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
-                                    <div @click="onRowDoubleClick(data)" class="cursor-pointer flex justify-center items-center">
+                                    <div @click="fn_extraerDatosEditarPersonal(data)" class="cursor-pointer flex justify-center items-center">
                                         <Button icon="fa-regular fa-pen-to-square" severity="success" aria-label=""/>
                                     </div>
                                 </template>
