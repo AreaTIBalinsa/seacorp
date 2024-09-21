@@ -111,7 +111,19 @@ const fn_extraerDatosEditarPersonal = (data) => {
                                 </div>
                             </template>
                             <template #empty> No se encontraron trabajadores.</template>
-                            <template #loading>Cargando datos de trabajadores. Por favor espere. </template>
+                            <template #loading>
+                                <!-- Simulación de Loading -->
+                                <div class="absolute top-0 left-0 w-full h-full text-gray-800 bg-white z-50 flex justify-center items-center">
+                                    <div class="flex flex-col justify-center items-center">
+                                        <p class="text-sm font-medium">Cargando datos de trabajadores... Por favor espere.</p>
+                                        <div class="flex">
+                                            <div class="loader"></div>
+                                            <div class="loader"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ==================== -->
+                            </template>
                             <Column header="Codigo" field="codigo" sortable headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
                                     <div @dblclick="fn_extraerDatosEditarPersonal(data)" class="cursor-pointer">

@@ -20,14 +20,6 @@ use App\Http\Controllers\UsuariosController;
 
 Route::redirect('/', '/login');
 
-// Route::get('/register', function () {
-//     return Inertia::render('Auth/Register', [
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// })->name('register');
-
 // Importante si quieres crear roles y permisos
 Route::middleware(['auth:web'])->group(function () {
     Route::resource('/ListarUsuarios', UsuariosController::class);
@@ -52,7 +44,12 @@ Route::middleware([
         return Inertia::render('ListarUsuarios/index');
     })->name('listarusuarios.index');
 
+    Route::get('/listarusuarios/create', function () {
+        return Inertia::render('ListarUsuarios/create');
+    })->name('listarusuarios.create');
+
     Route::get('/fn_traerDatosUsuarios', [UsuariosController::class, 'traerDatosUsuarios']);
+    route::post('/fn_registrarDatosdeUsuario', [UsuariosController::class, 'store'])->name('fn_registrarDatosdeUsuario');
 
     // ===== Reportes =====
 
@@ -73,10 +70,6 @@ Route::middleware([
         return Inertia::render('Personal/create');
     })->name('personal.create');
 
-    Route::get('/listarusuarios/create', function () {
-        return Inertia::render('ListarUsuarios/create');
-    })->name('listarusuarios.create');
-
     Route::get('/personal/edit-personal', [PersonalController::class, 'edit'])->name('personal.edit-personal');
     Route::put('/personal/update/{idEmpleado}', [PersonalController::class, 'update'])->name('personal.update');
     Route::post('/personal/store', [PersonalController::class, 'store'])->name('personal.store');
@@ -94,5 +87,3 @@ Route::middleware([
     Route::get('/fn_traerPreciosServis', [PreciosController::class, 'traerPreciosServis']);
     Route::get('/fn_guardarNuevoPrecioServis', [PreciosController::class, 'guardarNuevoPrecioServis']);
 });
-
-route::post('/fn_registrarDatosdeUsuario', [UsuariosController::class, 'store'])->name('fn_registrarDatosdeUsuario');

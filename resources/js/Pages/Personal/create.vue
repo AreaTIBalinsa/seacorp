@@ -114,17 +114,17 @@ watch(() => form.grupo, (newValue) => {
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 <div class="flex flex-col gap-y-2">
                                     <label for="nombresEmpleado" class="text-gray-500 text-xs">Nombre</label>
-                                    <InputText id="nombresEmpleado" v-model="form.nombresEmpleado" class="w-full"/>
+                                    <InputText id="nombresEmpleado" autocomplete="off" v-model="form.nombresEmpleado" class="w-full"/>
                                     <span v-if="form.errors.nombresEmpleado" class="text-red-500 text-xs">{{ form.errors.nombresEmpleado }}</span>
                                 </div>
                                 <div class="flex flex-col gap-y-2">
                                     <label for="apellidoPaternoEmple" class="text-gray-500 text-xs">Apellido Paterno</label>
-                                    <InputText id="apellidoPaternoEmple" v-model="form.apellidoPaternoEmple" class="w-full"/>
+                                    <InputText id="apellidoPaternoEmple" autocomplete="off" v-model="form.apellidoPaternoEmple" class="w-full"/>
                                     <span v-if="form.errors.apellidoPaternoEmple" class="text-red-500 text-xs">{{ form.errors.apellidoPaternoEmple }}</span>
                                 </div>
                                 <div class="flex flex-col gap-y-2">
                                     <label for="apellidoMaternoEmple" class="text-gray-500 text-xs">Apellido Materno</label>
-                                    <InputText id="apellidoMaternoEmple" v-model="form.apellidoMaternoEmple" class="w-full"/>
+                                    <InputText id="apellidoMaternoEmple" autocomplete="off" v-model="form.apellidoMaternoEmple" class="w-full"/>
                                     <span v-if="form.errors.apellidoMaternoEmple" class="text-red-500 text-xs">{{ form.errors.apellidoMaternoEmple }}</span>
                                 </div>
                                 <div class="flex flex-col gap-y-2">
@@ -134,17 +134,17 @@ watch(() => form.grupo, (newValue) => {
                                 </div>
                                 <div class="flex flex-col gap-y-2">
                                     <label for="numDocEmple" class="text-gray-500 text-xs">Numero de Documento</label>
-                                    <InputText id="numDocEmple" v-model="form.numDocEmple" class="w-full"/>
+                                    <InputText id="numDocEmple" autocomplete="off" v-model="form.numDocEmple" class="w-full"/>
                                     <span v-if="form.errors.numDocEmple" class="text-red-500 text-xs">{{ form.errors.numDocEmple }}</span>
                                 </div>
                                 <div class="flex flex-col gap-y-2">
                                     <label for="celularEmple" class="text-gray-500 text-xs">Celular</label>
-                                    <InputMask id="celularEmple" v-model="form.celularEmple" mask="999 999 999" placeholder="999 999 999" class="w-full"/>
+                                    <InputMask id="celularEmple" autocomplete="off" v-model="form.celularEmple" mask="999 999 999" placeholder="999 999 999" class="w-full"/>
                                     <span v-if="form.errors.celularEmple" class="text-red-500 text-xs">{{ form.errors.celularEmple }}</span>
                                 </div>
                                 <div class="flex flex-col gap-y-2 md:col-span-2">
                                     <label for="direccionEmple" class="text-gray-500 text-xs">Dirección</label>
-                                    <InputText id="direccionEmple" v-model="form.direccionEmple" class="w-full"/>
+                                    <InputText id="direccionEmple" autocomplete="off" v-model="form.direccionEmple" class="w-full"/>
                                     <span v-if="form.errors.direccionEmple" class="text-red-500 text-xs">{{ form.errors.direccionEmple }}</span>
                                 </div>
                             </div>
