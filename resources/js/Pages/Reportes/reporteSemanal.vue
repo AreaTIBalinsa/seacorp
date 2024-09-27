@@ -371,7 +371,8 @@ const tableToExcel = (function () {
 })();
 
 const fn_crearExcel = () => {
-    tableToExcel("tablaReporteSemanalExcel", `REPORTE SEMANAL`);
+    let selectString = (servis.value.filter(servi => servi.idGrupo === selectServis.value))[0].nombreGrupo;
+    tableToExcel("tablaReporteSemanalExcel", `REPORTE SEMANAL ${selectString} DESDE ${lunes.value} HASTA ${sabado.value}`);
 };
 </script>
 

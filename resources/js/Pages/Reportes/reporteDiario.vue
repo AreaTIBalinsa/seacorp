@@ -304,7 +304,7 @@ const tableToExcel = (function () {
 const fn_crearExcel = () => {
     let fechaString = new Date(fechaFiltro.value).toISOString().split('T')[0];
     let selectString = (servis.value.filter(servi => servi.idGrupo === selectServis.value))[0].nombreGrupo;
-    tableToExcel("tablaReporteDiarioExcel", `REPORTE ${selectString} ${fechaString}`);
+    tableToExcel("tablaReporteDiarioExcel", `REPORTE DIARIO ${selectString} ${fechaString}`);
 };
 
 </script>
