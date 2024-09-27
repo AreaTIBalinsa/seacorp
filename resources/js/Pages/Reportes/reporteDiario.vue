@@ -12,6 +12,12 @@ const selectServis = ref(null);
 const servis = ref([]);
 const cargando = ref(false);
 
+const precioTalloSolo = ref(0);
+const precioTalloCoral = ref(0);
+const precioMediaValvaTalloSolo = ref(0);
+const precioMediaValvaTalloCoral = ref(0);
+const precioOtros = ref(0);
+
 onMounted(() => {
     DatosServis.obtenerDatosServis().then((respuesta) => {
         servis.value = respuesta;
@@ -21,11 +27,11 @@ onMounted(() => {
 });
 
 function fn_traerDatosReporteDiario(fecha, grupo){
-    let precioTalloSolo = 0;
-    let precioTalloCoral = 0;
-    let precioMediaValvaTalloSolo = 0;
-    let precioMediaValvaTalloCoral = 0;
-    let precioOtros = 0;
+    precioTalloSolo.value = 0;
+    precioTalloCoral.value = 0;
+    precioMediaValvaTalloSolo.value = 0;
+    precioMediaValvaTalloCoral.value = 0;
+    precioOtros.value = 0;
 
     cargando.value = true;
 
@@ -36,23 +42,11 @@ function fn_traerDatosReporteDiario(fecha, grupo){
             grupo: grupo
         },
         success: function (response) {
-            precioTalloSolo = response[0]["preTalloSolo"];
-            precioTalloCoral = response[0]["preTalloCoral"];
-            precioMediaValvaTalloSolo = response[0]["preMediaValvaTS"];
-            precioMediaValvaTalloCoral = response[0]["preMediaValvaTC"];
-            precioOtros = response[0]["preOtros"];
-
-            $('#precioTalloSolo').text(precioTalloSolo);
-            $('#precioTalloCoral').text(precioTalloCoral);
-            $('#precioMediaValvaTalloSolo').text(precioMediaValvaTalloSolo);
-            $('#precioMediaValvaTalloCoral').text(precioMediaValvaTalloCoral);
-            $('#precioOtros').text(precioOtros);
-
-            $('#precioTalloSoloExcel').text(precioTalloSolo);
-            $('#precioTalloCoralExcel').text(precioTalloCoral);
-            $('#precioMediaValvaTalloSoloExcel').text(precioMediaValvaTalloSolo);
-            $('#precioMediaValvaTalloCoralExcel').text(precioMediaValvaTalloCoral);
-            $('#precioOtrosExcel').text(precioOtros);
+            precioTalloSolo.value = response[0]["preTalloSolo"];
+            precioTalloCoral.value = response[0]["preTalloCoral"];
+            precioMediaValvaTalloSolo.value = response[0]["preMediaValvaTS"];
+            precioMediaValvaTalloCoral.value = response[0]["preMediaValvaTC"];
+            precioOtros.value = response[0]["preOtros"];
 
             $.ajax({
                 url: '/fn_traerDatosReporteDiario',
@@ -285,8 +279,8 @@ watch([fechaFiltro, selectServis], ([newFechaFiltro, newSelectServis]) => {
     }
 });
 
-var tableToExcel = (function () {
-    var uri = "data:application/vnd.ms-excel;charset=utf-8;base64,",
+const tableToExcel = (function () {
+    const uri = "data:application/vnd.ms-excel;charset=utf-8;base64,",
         template =
             '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
         base64 = function (s) {
@@ -299,8 +293,8 @@ var tableToExcel = (function () {
         };
     return function (table, name) {
         if (!table.nodeType) table = document.getElementById(table);
-        var ctx = { worksheet: name || "Worksheet", table: table.innerHTML };
-        var link = document.createElement("a");
+        const ctx = { worksheet: name || "Worksheet", table: table.innerHTML };
+        const link = document.createElement("a");
         link.download = name + ".xls";
         link.href = uri + base64(format(template, ctx));
         link.click();
@@ -336,8 +330,8 @@ const fn_crearExcel = () => {
             </div>
             <Select v-model="selectServis" :options="servis" optionValue="idGrupo" optionLabel="nombreGrupo" placeholder="Selecciona Servis" checkmark :highlightOnSelect="false" class="w-full md:w-56 text-black" />
         </div>
-        <div class="flex justify-end items-center">
-            <Button @click="fn_crearExcel" icon="fa-regular fa-file-excel" class="w-full md:w-auto mb-4" severity="info" label="Exportar a Excel"/>
+        <div class="flex justify-end items-center mb-4">
+            <Button @click="fn_crearExcel" icon="fa-regular fa-file-excel" class="w-full md:w-auto" severity="info" label="Exportar a Excel"/>
         </div>
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
@@ -349,7 +343,7 @@ const fn_crearExcel = () => {
                                     <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] text-black border-r border-b border-black">Codigo</th>
                                     <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] min-w-[200px] text-black border-r border-b border-black">Nombre</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black" id="precioTalloSolo">0</th>
+                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">{{ precioTalloSolo }}</th>
                                     <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
                                     <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
                                     <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
@@ -364,7 +358,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black" id="precioTalloCoral">0</th>
+                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">{{ precioTalloCoral }}</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
@@ -379,7 +373,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">MV T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black" id="precioMediaValvaTalloSolo">0</th>
+                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">{{ precioMediaValvaTalloSolo }}</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
@@ -394,7 +388,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">MV T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black" id="precioMediaValvaTalloCoral">0</th>
+                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">{{ precioMediaValvaTalloCoral }}</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#FF0000] text-white border-r border-b border-black">Tallo Solo</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">Tallo Coral</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">Media Valva T/S</th>
@@ -405,7 +399,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">OTROS</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black" id="precioOtros">0</th>
+                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">{{ precioOtros }}</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
                                     <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
@@ -429,7 +423,7 @@ const fn_crearExcel = () => {
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" rowspan="5" class="p-2 text-base">Codigo</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; width: 200px; color: black" rowspan="5" class="p-2 text-base">Nombre</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm" id="precioTalloSoloExcel">0</th>
+                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">{{ precioTalloSolo }}</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
@@ -444,7 +438,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm" id="precioTalloCoralExcel">0</th>
+                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">{{ precioTalloCoral }}</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
@@ -459,7 +453,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">MV T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm" id="precioMediaValvaTalloSoloExcel">0</th>
+                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloSolo }}</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
                                     <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
@@ -474,7 +468,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">MV T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm" id="precioMediaValvaTalloCoralExcel">0</th>
+                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloCoral }}</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; color: white" class="p-2 text-sm">Tallo Solo</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">Tallo Coral</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">Media Valva T/S</th>
@@ -485,7 +479,7 @@ const fn_crearExcel = () => {
                                 </tr>
                                 <tr>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">OTROS</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm" id="precioOtrosExcel">0</th>
+                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">{{ precioOtros }}</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
                                     <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>

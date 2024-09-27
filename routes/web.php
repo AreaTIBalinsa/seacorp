@@ -57,8 +57,9 @@ Route::middleware([
         return Inertia::render('Reportes/index');
     })->name('reportes.index');
 
-    Route::get('/fn_traerDatosReporteDiario', [ReporteController::class, 'traerDatosReporteDiario']);
     Route::get('/fn_traerPreciosServisGrupo', [ReporteController::class, 'traerPreciosServisGrupo']);
+    Route::get('/fn_traerDatosReporteDiario', [ReporteController::class, 'traerDatosReporteDiario']);
+    Route::get('/fn_traerDatosReporteSemanal', [ReporteController::class, 'traerDatosReporteSemanal']);
     
     // ===== Personal =====
 
