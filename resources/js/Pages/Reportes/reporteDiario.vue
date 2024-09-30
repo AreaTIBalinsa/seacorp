@@ -168,7 +168,7 @@ function fn_traerDatosReporteDiario(fecha, grupo){
                             descuentoTotalKgMediaValvaTalloCoral += descuentoMediaValvaTalloCoral;
                             descuentoTotalKgOtros += descuentoOtros;
 
-                            let totalAPagar = ((pesoNetoTalloSolo - descuentoTalloSolo) * precioTalloSolo) + ((pesoNetoTalloCoral - descuentoTalloCoral) * precioTalloCoral) + ((pesoNetoMediaValvaTalloSolo - descuentoMediaValvaTalloSolo) * precioMediaValvaTalloSolo) + ((pesoNetoMediaValvaTalloCoral - descuentoMediaValvaTalloCoral) * precioMediaValvaTalloCoral) + ((pesoNetoOtros - descuentoOtros) * precioOtros);
+                            let totalAPagar = ((pesoNetoTalloSolo - descuentoTalloSolo) * precioTalloSolo.value) + ((pesoNetoTalloCoral - descuentoTalloCoral) * precioTalloCoral.value) + ((pesoNetoMediaValvaTalloSolo - descuentoMediaValvaTalloSolo) * precioMediaValvaTalloSolo.value) + ((pesoNetoMediaValvaTalloCoral - descuentoMediaValvaTalloCoral) * precioMediaValvaTalloCoral.value) + ((pesoNetoOtros - descuentoOtros) * precioOtros.value);
                             totalAPagarGlobal += totalAPagar;
 
                             const nuevaFila = `

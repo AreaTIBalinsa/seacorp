@@ -43,7 +43,8 @@ class ReporteController extends Controller
             LEFT JOIN tb_descuentos ON tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
                 AND tb_descuentos.especie = tb_pesadas.especie
                 AND tb_descuentos.fecha = tb_pesadas.fech_InicioProc
-            WHERE fech_InicioProc = ? 
+            WHERE fech_InicioProc = ?
+                AND estadoPesada = 1
                 AND tb_empleados.grupo = ?
             GROUP BY tb_pesadas.especie, tb_pesadas.codigoUsuario, nombreCompleto
             ORDER BY tb_pesadas.codigoUsuario ASC;
@@ -71,7 +72,8 @@ class ReporteController extends Controller
             LEFT JOIN tb_descuentos ON tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
                 AND tb_descuentos.especie = tb_pesadas.especie
                 AND tb_descuentos.fecha = tb_pesadas.fech_InicioProc
-            WHERE fech_InicioProc BETWEEN ? AND ? 
+            WHERE fech_InicioProc BETWEEN ? AND ?
+                AND estadoPesada = 1
                 AND tb_empleados.grupo = ?
             GROUP BY tb_pesadas.especie, tb_pesadas.codigoUsuario, nombreCompleto, fech_InicioProc
             ORDER BY tb_pesadas.codigoUsuario ASC;
