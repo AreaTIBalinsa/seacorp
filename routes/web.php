@@ -60,6 +60,8 @@ Route::middleware([
     Route::get('/fn_traerPreciosServisGrupo', [ReporteController::class, 'traerPreciosServisGrupo']);
     Route::get('/fn_traerDatosReporteDiario', [ReporteController::class, 'traerDatosReporteDiario']);
     Route::get('/fn_traerDatosReporteSemanal', [ReporteController::class, 'traerDatosReporteSemanal']);
+    Route::get('/fn_traerProcesos', [ReporteController::class, 'traerProcesos']);
+    Route::get('/fn_traerDetalleProceso', [ReporteController::class, 'traerDetalleProceso']);
     
     // ===== Personal =====
 

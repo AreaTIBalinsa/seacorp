@@ -144,12 +144,26 @@ class PersonalController extends Controller
     public function traerCodigoPersonal(Request $request){
         $grupo = $request->input('grupo');
 
+        $rango = DB::select('
+            SELECT rango 
+            FROM tb_grupos 
+            WHERE idGrupo = ?
+        ', [$grupo]);
+    
+        if (empty($rango)) {
+            return response()->json(['error' => 'Grupo no encontrado'], 404);
+        }
+
+        $rangoValores = explode('-', $rango[0]->rango);
+        $rangoMin = (int)$rangoValores[0] + 1;
+    
         $datos = DB::select('
-            SELECT IFNULL(MAX(CONVERT(codigo, SIGNED))+1,0) AS cant_cod 
+            SELECT IFNULL(MAX(CONVERT(codigo, SIGNED))+1, ?) AS cant_cod 
             FROM tb_empleados 
             WHERE grupo = ?
-        ',[$grupo]);
-
+        ', [$rangoMin, $grupo]);
+    
         return response()->json($datos);
-    }
+    }    
+
 }

@@ -87,5 +87,44 @@ class ReporteController extends Controller
     
         return response()->json($datos);
     }
+
+    public function traerProcesos(Request $request){
+        $fecha = $request->input('fecha');
+    
+        $datos = DB::select('
+            SELECT
+            idProceso,
+            fechaInicio,
+            horainicio,
+            fechaFin,
+            horaFin,
+            acumulado
+            FROM tb_procesos
+            WHERE acumulado > 0 
+            AND fechaInicio = ?
+            ', [$fecha]);
+    
+        return response()->json($datos);
+    }   
+    
+    public function traerDetalleProceso(Request $request){
+        $idProceso = $request->input('idProceso');
+    
+        $datos = DB::select('
+            SELECT
+            SUM(tb_pesadas.pesoNeto) AS totalPesoNeto,
+            SUM(tb_pesadas.pesoExcedido) AS totalPesoExcedido,
+            tb_pesadas.especie,
+            tb_pesadas.idLote,
+            tb_grupos.nombreGrupo
+            FROM tb_pesadas
+            INNER JOIN tb_empleados ON tb_empleados.codigo = tb_pesadas.codigoUsuario
+            INNER JOIN tb_grupos ON tb_grupos.idGrupo = tb_empleados.grupo
+            WHERE tb_pesadas.idProceso = ?
+            GROUP BY tb_pesadas.especie, tb_pesadas.idLote, tb_grupos.nombreGrupo
+            ', [$idProceso]);
+    
+        return response()->json($datos);
+    }   
     
 }

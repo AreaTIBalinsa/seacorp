@@ -315,195 +315,195 @@ const fn_crearExcel = () => {
 </script>
 
 <template>
-        <!-- Simulación de Loading -->
-        <div v-show="cargando" class="absolute top-0 left-0 w-full h-full bg-white z-50 flex justify-center items-center">
-            <div class="flex flex-col justify-center items-center">
-                <p class="text-sm font-medium">Cargando...</p>
-                <div class="flex">
-                    <div class="loader"></div>
-                    <div class="loader"></div>
+    <!-- Simulación de Loading -->
+    <div v-show="cargando" class="absolute top-0 left-0 w-full h-full bg-white z-50 flex justify-center items-center">
+        <div class="flex flex-col justify-center items-center">
+            <p class="text-sm font-medium">Cargando...</p>
+            <div class="flex">
+                <div class="loader"></div>
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== -->
+    <div class="flex justify-center md:justify-between items-center flex-wrap gap-4 mb-4">
+        <h2 class="font-bold text-xl w-full md:w-auto">Reporte Diario</h2>
+    </div>
+    <div class="flex flex-wrap gap-4 mb-4">
+        <div class="w-full md:max-w-max">
+            <DatePicker v-model="fechaFiltro" showIcon fluid iconDisplay="input" inputId="fechaFiltro" dateFormat="dd/mm/yy"/>
+        </div>
+        <Select v-model="selectServis" :options="servis" optionValue="idGrupo" optionLabel="nombreGrupo" placeholder="Selecciona Servis" checkmark :highlightOnSelect="false" class="w-full md:w-56 text-black" />
+    </div>
+    <div class="flex justify-end items-center mb-4">
+        <Button @click="fn_crearExcel" icon="fa-regular fa-file-excel" class="w-full md:w-auto" severity="info" label="Exportar a Excel"/>
+    </div>
+    <div class="flex flex-col">
+        <div class="-m-1.5 overflow-x-auto">
+            <div class="p-1.5 min-w-full inline-block align-middle">
+                <div class="border rounded-lg overflow-hidden border-black">
+                    <table class="min-w-full divide-y divide-gray-200" id="tablaReporteDiario">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] text-black border-r border-b border-black">Codigo</th>
+                                <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] min-w-[200px] text-black border-r border-b border-black">Nombre</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">T/S</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">{{ precioTalloSolo }}</th>
+                                <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center min-w-[200px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">T/C</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">{{ precioTalloCoral }}</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">MV T/S</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">{{ precioMediaValvaTalloSolo }}</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">MV T/C</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">{{ precioMediaValvaTalloCoral }}</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FF0000] text-white border-r border-b border-black">Tallo Solo</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">Tallo Coral</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">Media Valva T/S</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">Media Valva T/C</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">Otros</th>
+                                <th colspan="5" class="p-2 text-center text-sm font-bold bg-[#F14747] text-white border-r border-b border-black">Descuentos Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF00] text-black border-b border-black">Neto a Pagar</th>
+                            </tr>
+                            <tr>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">OTROS</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">{{ precioOtros }}</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FF0000] text-white border-r border-b border-black">T/S</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">T/C</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">MV T/S</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">MV T/C</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">OTROS</th>
+                                <th class="p-2 text-center text-sm font-bold bg-[#FFFF00] text-black border-b border-black">S/</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-black" id="bodyReporteDiario">
+                            <tr><td colspan="15" class="text-center">No hay datos</td></tr>
+                        </tbody>
+                    </table>
+                    <table class="min-w-full hidden" id="tablaReporteDiarioExcel">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" rowspan="5" class="p-2 text-base">Codigo</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; width: 200px; color: black" rowspan="5" class="p-2 text-base">Nombre</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">T/S</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">{{ precioTalloSolo }}</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 200px; color: black" class="p-2 text-sm">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">T/C</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">{{ precioTalloCoral }}</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">MV T/S</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloSolo }}</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                                <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">MV T/C</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloCoral }}</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; color: white" class="p-2 text-sm">Tallo Solo</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">Tallo Coral</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">Media Valva T/S</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">Media Valva T/C</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">Otros</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #F14747; text-align: center; color: white" colspan="5" class="p-2 text-sm">Descuentos Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF00; text-align: center; color: black" class="p-2 text-sm">Neto a Pagar</th>
+                            </tr>
+                            <tr>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">OTROS</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">{{ precioOtros }}</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; color: white" class="p-2 text-sm">T/S</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">T/C</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">MV T/S</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">MV T/C</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">OTROS</th>
+                                <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF00; text-align: center; color: black" class="p-2 text-sm">S/</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-black" id="bodyReporteDiarioExcel">
+                            <tr><td colspan="15" class="text-center">No hay datos</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <!-- ==================== -->
-        <div class="flex justify-center md:justify-between items-center flex-wrap gap-4 mb-4">
-            <h2 class="font-bold text-xl w-full md:w-auto">Reporte Diario</h2>
-        </div>
-        <div class="flex flex-wrap gap-4 mb-4">
-            <div class="w-full md:max-w-max">
-                <DatePicker v-model="fechaFiltro" showIcon fluid iconDisplay="input" inputId="fechaFiltro" dateFormat="dd/mm/yy"/>
-            </div>
-            <Select v-model="selectServis" :options="servis" optionValue="idGrupo" optionLabel="nombreGrupo" placeholder="Selecciona Servis" checkmark :highlightOnSelect="false" class="w-full md:w-56 text-black" />
-        </div>
-        <div class="flex justify-end items-center mb-4">
-            <Button @click="fn_crearExcel" icon="fa-regular fa-file-excel" class="w-full md:w-auto" severity="info" label="Exportar a Excel"/>
-        </div>
-        <div class="flex flex-col">
-            <div class="-m-1.5 overflow-x-auto">
-                <div class="p-1.5 min-w-full inline-block align-middle">
-                    <div class="border rounded-lg overflow-hidden border-black">
-                        <table class="min-w-full divide-y divide-gray-200" id="tablaReporteDiario">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] text-black border-r border-b border-black">Codigo</th>
-                                    <th rowspan="5" class="p-2 text-center text-base font-bold bg-[#FFFF85] min-w-[200px] text-black border-r border-b border-black">Nombre</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] min-w-[100px] text-white border-r border-b border-black">{{ precioTalloSolo }}</th>
-                                    <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[150px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[100px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center min-w-[200px] text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">{{ precioTalloCoral }}</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">MV T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">{{ precioMediaValvaTalloSolo }}</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-b border-black">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">MV T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">{{ precioMediaValvaTalloCoral }}</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] text-white border-r border-b border-black">Tallo Solo</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">Tallo Coral</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">Media Valva T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">Media Valva T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">Otros</th>
-                                    <th colspan="5" class="p-2 text-center text-sm font-bold bg-[#F14747] text-white border-r border-b border-black">Descuentos Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF00] text-black border-b border-black">Neto a Pagar</th>
-                                </tr>
-                                <tr>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">OTROS</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">{{ precioOtros }}</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF85] text-black border-r border-b border-black">Kg</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FF0000] text-white border-r border-b border-black">T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#0060ff] text-white border-r border-b border-black">T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#00B050] text-white border-r border-b border-black">MV T/S</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#000000] text-white border-r border-b border-black">MV T/C</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#ffffff] text-black border-r border-b border-black">OTROS</th>
-                                    <th class="p-2 text-center text-sm font-bold bg-[#FFFF00] text-black border-b border-black">S/</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-black" id="bodyReporteDiario">
-                                <tr><td colspan="15" class="text-center">No hay datos</td></tr>
-                            </tbody>
-                        </table>
-                        <table class="min-w-full hidden" id="tablaReporteDiarioExcel">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" rowspan="5" class="p-2 text-base">Codigo</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; width: 200px; color: black" rowspan="5" class="p-2 text-base">Nombre</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; width: 100px; color: white" class="p-2 text-sm">{{ precioTalloSolo }}</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 150px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 100px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; width: 200px; color: black" class="p-2 text-sm">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">{{ precioTalloCoral }}</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">MV T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloSolo }}</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                    <th style="font-weight: bold; background-color: #FFFFFF; text-align: center; color: black" class="p-2 text-sm">&nbsp;</th>
-                                </tr>
-                                <tr>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">MV T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">{{ precioMediaValvaTalloCoral }}</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; color: white" class="p-2 text-sm">Tallo Solo</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">Tallo Coral</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">Media Valva T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">Media Valva T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">Otros</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #F14747; text-align: center; color: white" colspan="5" class="p-2 text-sm">Descuentos Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF00; text-align: center; color: black" class="p-2 text-sm">Neto a Pagar</th>
-                                </tr>
-                                <tr>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">OTROS</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">{{ precioOtros }}</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF85; text-align: center; color: black" class="p-2 text-sm">Kg</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FF0000; text-align: center; color: white" class="p-2 text-sm">T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #0060ff; text-align: center; color: white" class="p-2 text-sm">T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #00B050; text-align: center; color: white" class="p-2 text-sm">MV T/S</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #000000; text-align: center; color: white" class="p-2 text-sm">MV T/C</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #ffffff; text-align: center; color: black" class="p-2 text-sm">OTROS</th>
-                                    <th style="border:1px solid #000000; font-weight: bold; background-color: #FFFF00; text-align: center; color: black" class="p-2 text-sm">S/</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-black" id="bodyReporteDiarioExcel">
-                                <tr><td colspan="15" class="text-center">No hay datos</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
 </template>
