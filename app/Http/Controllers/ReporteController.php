@@ -29,7 +29,7 @@ class ReporteController extends Controller
     public function traerDatosReporteDiario(Request $request){
         $fecha = $request->input('fecha');
         $grupo = $request->input('grupo');
-
+    
         $datos = DB::select('
             SELECT 
                 tb_pesadas.codigoUsuario,
@@ -37,27 +37,30 @@ class ReporteController extends Controller
                 tb_pesadas.especie,
                 SUM(tb_pesadas.pesoNeto) AS totalPesoNeto,
                 SUM(tb_pesadas.tara) AS totalTara,
-                IFNULL(SUM(tb_descuentos.pesoDescuento), 0) AS pesoDescuento
+                (
+                    SELECT IFNULL(SUM(tb_descuentos.pesoDescuento), 0)
+                    FROM tb_descuentos 
+                    WHERE tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
+                    AND tb_descuentos.especie = tb_pesadas.especie
+                    AND tb_descuentos.fecha = tb_pesadas.fech_InicioProc
+                ) AS pesoDescuento
             FROM tb_pesadas
             INNER JOIN tb_empleados ON tb_empleados.codigo = tb_pesadas.codigoUsuario
-            LEFT JOIN tb_descuentos ON tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
-                AND tb_descuentos.especie = tb_pesadas.especie
-                AND tb_descuentos.fecha = tb_pesadas.fech_InicioProc
             WHERE fech_InicioProc = ?
                 AND estadoPesada = 1
                 AND tb_empleados.grupo = ?
-            GROUP BY tb_pesadas.especie, tb_pesadas.codigoUsuario, nombreCompleto
+            GROUP BY tb_pesadas.especie, tb_pesadas.codigoUsuario, nombreCompleto, tb_pesadas.fech_InicioProc
             ORDER BY tb_pesadas.codigoUsuario ASC;
-            ',[$fecha, $grupo]);
-
+            ', [$fecha, $grupo]);
+    
         return response()->json($datos);
-    }
+    }    
 
     public function traerDatosReporteSemanal(Request $request){
         $fechaDesde = $request->input('fechaDesde');
         $fechaHasta = $request->input('fechaHasta');
         $grupo = $request->input('grupo');
-
+    
         $datos = DB::select('
             SELECT 
                 tb_pesadas.fech_InicioProc,
@@ -66,19 +69,23 @@ class ReporteController extends Controller
                 tb_pesadas.especie,
                 SUM(tb_pesadas.pesoNeto) AS totalPesoNeto,
                 SUM(tb_pesadas.tara) AS totalTara,
-                IFNULL(SUM(tb_descuentos.pesoDescuento), 0) AS pesoDescuento
+                (
+                    SELECT IFNULL(SUM(tb_descuentos.pesoDescuento), 0)
+                    FROM tb_descuentos
+                    WHERE tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
+                    AND tb_descuentos.especie = tb_pesadas.especie
+                    AND tb_descuentos.fecha BETWEEN ? AND ?
+                ) AS pesoDescuento
             FROM tb_pesadas
             INNER JOIN tb_empleados ON tb_empleados.codigo = tb_pesadas.codigoUsuario
-            LEFT JOIN tb_descuentos ON tb_descuentos.codigoUsuario = tb_pesadas.codigoUsuario
-                AND tb_descuentos.especie = tb_pesadas.especie
-                AND tb_descuentos.fecha = tb_pesadas.fech_InicioProc
             WHERE fech_InicioProc BETWEEN ? AND ?
                 AND estadoPesada = 1
                 AND tb_empleados.grupo = ?
-            GROUP BY tb_pesadas.especie, tb_pesadas.codigoUsuario, nombreCompleto, fech_InicioProc
+            GROUP BY tb_pesadas.fech_InicioProc, tb_pesadas.codigoUsuario, nombreCompleto, tb_pesadas.especie
             ORDER BY tb_pesadas.codigoUsuario ASC;
-            ',[$fechaDesde, $fechaHasta, $grupo]);
-
+        ', [$fechaDesde, $fechaHasta, $fechaDesde, $fechaHasta, $grupo]);
+    
         return response()->json($datos);
     }
+    
 }

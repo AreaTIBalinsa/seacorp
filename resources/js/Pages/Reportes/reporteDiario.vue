@@ -26,6 +26,11 @@ onMounted(() => {
     });
 });
 
+function fn_redondearHaciaAbajo(numero, decimales) {
+    const factor = Math.pow(10, decimales);
+    return Math.floor(numero * factor) / factor;
+}
+
 function fn_traerDatosReporteDiario(fecha, grupo){
     precioTalloSolo.value = 0;
     precioTalloCoral.value = 0;
@@ -94,29 +99,29 @@ function fn_traerDatosReporteDiario(fecha, grupo){
                             // Identificar la especie y sumar los valores correspondientes
                             switch (especie) {
                                 case "MEDIA VALVA T/C":
-                                    result[codigoUsuario].totalPesoNetoMEDIAVALVATC += parseFloat(totalPesoNeto);
-                                    result[codigoUsuario].totalTaraMEDIAVALVATC += parseFloat(totalTara);
-                                    result[codigoUsuario].descuentoMEDIAVALVATC += parseFloat(pesoDescuento);
+                                    result[codigoUsuario].totalPesoNetoMEDIAVALVATC = fn_redondearHaciaAbajo(parseFloat(totalPesoNeto), 2);
+                                    result[codigoUsuario].totalTaraMEDIAVALVATC = fn_redondearHaciaAbajo(parseFloat(totalTara), 2);
+                                    result[codigoUsuario].descuentoMEDIAVALVATC = parseFloat(pesoDescuento);
                                     break;
                                 case "MEDIA VALVA T/S":
-                                    result[codigoUsuario].totalPesoNetoMEDIAVALVATS += parseFloat(totalPesoNeto);
-                                    result[codigoUsuario].totalTaraMEDIAVALVATS += parseFloat(totalTara);
-                                    result[codigoUsuario].descuentoMEDIAVALVATS += parseFloat(pesoDescuento);
+                                    result[codigoUsuario].totalPesoNetoMEDIAVALVATS = fn_redondearHaciaAbajo(parseFloat(totalPesoNeto), 2);
+                                    result[codigoUsuario].totalTaraMEDIAVALVATS = fn_redondearHaciaAbajo(parseFloat(totalTara), 2);
+                                    result[codigoUsuario].descuentoMEDIAVALVATS = parseFloat(pesoDescuento);
                                     break;
                                 case "TALLO SOLO":
-                                    result[codigoUsuario].totalPesoNetoTALLOSOLO += parseFloat(totalPesoNeto);
-                                    result[codigoUsuario].totalTaraTALLOSOLO += parseFloat(totalTara);
-                                    result[codigoUsuario].descuentoTALLOSOLO += parseFloat(pesoDescuento);
+                                    result[codigoUsuario].totalPesoNetoTALLOSOLO = fn_redondearHaciaAbajo(parseFloat(totalPesoNeto), 2);
+                                    result[codigoUsuario].totalTaraTALLOSOLO = fn_redondearHaciaAbajo(parseFloat(totalTara), 2);
+                                    result[codigoUsuario].descuentoTALLOSOLO = parseFloat(pesoDescuento);
                                     break;
                                 case "TALLO CORAL":
-                                    result[codigoUsuario].totalPesoNetoTALLOCORAL += parseFloat(totalPesoNeto);
-                                    result[codigoUsuario].totalTaraTALLOCORAL += parseFloat(totalTara);
-                                    result[codigoUsuario].descuentoTALLOCORAL += parseFloat(pesoDescuento);
+                                    result[codigoUsuario].totalPesoNetoTALLOCORAL = fn_redondearHaciaAbajo(parseFloat(totalPesoNeto), 2);
+                                    result[codigoUsuario].totalTaraTALLOCORAL = fn_redondearHaciaAbajo(parseFloat(totalTara), 2);
+                                    result[codigoUsuario].descuentoTALLOCORAL = parseFloat(pesoDescuento);
                                     break;
                                 case "OTROS":
-                                    result[codigoUsuario].totalPesoNetoOTROS += parseFloat(totalPesoNeto);
-                                    result[codigoUsuario].totalTaraOTROS += parseFloat(totalTara);
-                                    result[codigoUsuario].descuentoOTROS += parseFloat(pesoDescuento);
+                                    result[codigoUsuario].totalPesoNetoOTROS = fn_redondearHaciaAbajo(parseFloat(totalPesoNeto), 2);
+                                    result[codigoUsuario].totalTaraOTROS = fn_redondearHaciaAbajo(parseFloat(totalTara), 2);
+                                    result[codigoUsuario].descuentoOTROS = parseFloat(pesoDescuento);
                                     break;
                                 default:
                                     break;
@@ -326,7 +331,7 @@ const fn_crearExcel = () => {
         </div>
         <div class="flex flex-wrap gap-4 mb-4">
             <div class="w-full md:max-w-max">
-                <DatePicker v-model="fechaFiltro" showIcon fluid iconDisplay="input" inputId="fechaFiltro" />
+                <DatePicker v-model="fechaFiltro" showIcon fluid iconDisplay="input" inputId="fechaFiltro" dateFormat="dd/mm/yy"/>
             </div>
             <Select v-model="selectServis" :options="servis" optionValue="idGrupo" optionLabel="nombreGrupo" placeholder="Selecciona Servis" checkmark :highlightOnSelect="false" class="w-full md:w-56 text-black" />
         </div>

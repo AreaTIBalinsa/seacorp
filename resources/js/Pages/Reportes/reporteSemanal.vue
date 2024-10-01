@@ -196,6 +196,11 @@ const fn_asignaFechasEnTabla = () => {
 
 fn_asignaFechasEnTabla();
 
+function fn_redondearHaciaAbajo(numero, decimales) {
+    const factor = Math.pow(10, decimales);
+    return Math.floor(numero * factor) / factor;
+}
+
 async function fn_traerDatosReporteSemanal(grupo) {
     precioTalloSolo.value = 0;
     precioTalloCoral.value = 0;
@@ -254,17 +259,17 @@ async function fn_traerDatosReporteSemanal(grupo) {
                 else if (fech_InicioProc === sabado.value) diaSemana = 'Sabado';
 
                 if (diaSemana) {
-                    acc[codigoUsuario][`totalPesoNeto${diaSemana}${especie.replace(/\s+/g, '')}`] = parseFloat(totalPesoNeto).toFixed(2);
-                    acc[codigoUsuario][`totalTara${diaSemana}${especie.replace(/\s+/g, '')}`] = parseFloat(totalTara).toFixed(2);
+                    acc[codigoUsuario][`totalPesoNeto${diaSemana}${especie.replace(/\s+/g, '')}`] = fn_redondearHaciaAbajo(totalPesoNeto, 2).toFixed(2);
+                    acc[codigoUsuario][`totalTara${diaSemana}${especie.replace(/\s+/g, '')}`] = fn_redondearHaciaAbajo(totalTara, 2).toFixed(2);
                 }
 
                 acc[codigoUsuario][`pesoDescuento${especie.replace(/\s+/g, '')}`] = parseFloat(pesoDescuento || 0).toFixed(2);
 
                 acc[codigoUsuario][`totalPesoNeto${especie.replace(/\s+/g, '')}`] = 
-                    (parseFloat(acc[codigoUsuario][`totalPesoNeto${especie.replace(/\s+/g, '')}`]) + parseFloat(totalPesoNeto)).toFixed(2);
+                    (parseFloat(acc[codigoUsuario][`totalPesoNeto${especie.replace(/\s+/g, '')}`]) + fn_redondearHaciaAbajo(totalPesoNeto, 2)).toFixed(2);
 
                 acc[codigoUsuario][`totalTara${especie.replace(/\s+/g, '')}`] = 
-                    (parseFloat(acc[codigoUsuario][`totalTara${especie.replace(/\s+/g, '')}`]) + parseFloat(totalTara)).toFixed(2);
+                    (parseFloat(acc[codigoUsuario][`totalTara${especie.replace(/\s+/g, '')}`]) + fn_redondearHaciaAbajo(totalTara, 2)).toFixed(2);
 
                 return acc;
             }, {});
