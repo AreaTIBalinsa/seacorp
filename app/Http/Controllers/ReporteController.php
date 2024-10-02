@@ -90,30 +90,31 @@ class ReporteController extends Controller
 
     public function traerProcesos(Request $request){
         $fecha = $request->input('fecha');
-    
+
         $datos = DB::select('
             SELECT
-            idProceso,
-            fechaInicio,
-            horainicio,
-            fechaFin,
-            horaFin,
-            acumulado
-            FROM tb_procesos
-            WHERE acumulado > 0 
-            AND fechaInicio = ?
-            ', [$fecha]);
-    
+            p.idProceso,
+            (SELECT SUM(pesoExcedido) FROM tb_pesadas WHERE idProceso = p.idProceso) AS totalPesoExtra,
+            p.fechaInicio,
+            p.horainicio,
+            p.fechaFin,
+            p.horaFin,
+            p.acumulado
+            FROM tb_procesos p
+            WHERE p.acumulado > 0
+            AND p.fechaInicio = ?
+            ORDER BY p.idProceso DESC
+        ', [$fecha]);
+
         return response()->json($datos);
-    }   
+    }
     
     public function traerDetalleProceso(Request $request){
         $idProceso = $request->input('idProceso');
     
         $datos = DB::select('
             SELECT
-            SUM(tb_pesadas.pesoNeto) AS totalPesoNeto,
-            SUM(tb_pesadas.pesoExcedido) AS totalPesoExcedido,
+            SUM(tb_pesadas.pesoNeto + tb_pesadas.pesoExcedido) AS totalPesoNeto,
             tb_pesadas.especie,
             tb_pesadas.idLote,
             tb_grupos.nombreGrupo

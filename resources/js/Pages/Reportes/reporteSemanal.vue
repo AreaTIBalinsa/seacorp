@@ -194,8 +194,6 @@ const fn_asignaFechasEnTabla = () => {
     fechaSabado.value = fn_formatearDia(sabado.value);
 }
 
-fn_asignaFechasEnTabla();
-
 function fn_redondearHaciaAbajo(numero, decimales) {
     const factor = Math.pow(10, decimales);
     return Math.floor(numero * factor) / factor;
@@ -379,6 +377,10 @@ const fn_crearExcel = () => {
     let selectString = (servis.value.filter(servi => servi.idGrupo === selectServis.value))[0].nombreGrupo;
     tableToExcel("tablaReporteSemanalExcel", `REPORTE SEMANAL ${selectString} DESDE ${lunes.value} HASTA ${sabado.value}`);
 };
+
+onMounted(() => {
+    fn_asignaFechasEnTabla();
+});
 </script>
 
 <template>

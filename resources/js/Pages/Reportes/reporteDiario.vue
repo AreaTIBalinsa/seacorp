@@ -277,7 +277,7 @@ function fn_traerDatosReporteDiario(fecha, grupo){
 watch([fechaFiltro, selectServis], ([newFechaFiltro, newSelectServis]) => {
     let fechaString = null;
     if (newFechaFiltro){
-        fechaString = new Date(newFechaFiltro).toISOString().split('T')[0]
+        fechaString = new Date(newFechaFiltro.getFullYear(), newFechaFiltro.getMonth(), newFechaFiltro.getDate()).toISOString().split('T')[0];
     }
     if (fechaString && newSelectServis){
         fn_traerDatosReporteDiario(fechaString, newSelectServis);

@@ -6,8 +6,11 @@ import { ref, watch, onMounted } from 'vue';
 
 const fechaActual = new Date();
 const fechaFiltro = ref(fechaActual);
+const fechaHoy = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate()).toISOString().split('T')[0];
+const cargandoDetalle = ref(false);
 const cargando = ref(false);
 const procesos = ref([]);
+const detalleProceso = ref(null);
 
 function fn_traerProcesos(fecha){
     $.ajax({
@@ -18,6 +21,7 @@ function fn_traerProcesos(fecha){
         },
         success: function (response) {
             procesos.value = response;
+            cargando.value = false;
         },
         error: function (error) {
             console.error('Error al obtener los datos', error);
@@ -25,9 +29,12 @@ function fn_traerProcesos(fecha){
     });
 }
 
-fn_traerProcesos("2024-10-01");
-
-function fn_traerDetalleProceso(idProceso) {
+function fn_traerDetalleProceso(proceso) {
+    cargandoDetalle.value = true;
+    let idProceso = proceso.idProceso;
+    detalleProceso.value = proceso;
+    const $container = $('#tablasDetalleProceso');
+    $container.empty();
     $.ajax({
         url: '/fn_traerDetalleProceso',
         method: 'GET',
@@ -73,7 +80,7 @@ function renderTablas(especies) {
         }
 
         const $template = $(
-            `<div class="flex flex-col mb-6">
+            `<div class="flex flex-col">
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
                         <div class="border rounded-lg overflow-hidden border-black">
@@ -98,7 +105,7 @@ function renderTablas(especies) {
         } else if (especie == "OTROS") {
             colorBgText = "bg-white text-black";
         }
-        const $caption = $(`<caption class="${colorBgText} p-3 text-center text-base font-medium uppercase whitespace-nowrap"></caption>`).text(especie);
+        const $caption = $(`<caption class="${colorBgText} p-3 text-center text-base font-bold uppercase whitespace-nowrap"></caption>`).text(especie);
         $table.append($caption);
 
         let lotes = new Set();
@@ -118,8 +125,8 @@ function renderTablas(especies) {
         $.each(lotes, function (_, lote) {
             $headerRow.append($(`<th class="p-3 text-left text-xs font-semibold border-r uppercase"></th>`).text(`Lote ${lote}`));
         });
-        $headerRow.append($('<th class="p-3 text-left text-xs font-semibold border-r uppercase"></th>').text('Total Servis'));
-        $headerRow.append($('<th class="p-3 text-left text-xs font-semibold border-r uppercase"></th>').text('%'));
+        $headerRow.append($('<th class="p-3 text-left text-xs font-bold border-r uppercase"></th>').text('Total Servis'));
+        $headerRow.append($('<th class="p-3 text-left text-xs font-bold uppercase"></th>').text('%'));
         $thead.append($headerRow);
         $table.append($thead);
 
@@ -182,6 +189,7 @@ function renderTablas(especies) {
 
         $container.append($template);
     });
+    cargandoDetalle.value = false;
 }
 
 function fn_formatoFecha(fecha) {
@@ -189,20 +197,24 @@ function fn_formatoFecha(fecha) {
     return `${day}/${month}/${year}`;
 }
 
+watch(fechaFiltro, (newFechaFiltro) => {
+    detalleProceso.value = null;
+    const $container = $('#tablasDetalleProceso');
+    $container.empty();
+    cargando.value = true;
+    let fechaString = null;
+    if (newFechaFiltro){
+        fechaString = new Date(newFechaFiltro.getFullYear(), newFechaFiltro.getMonth(), newFechaFiltro.getDate()).toISOString().split('T')[0];
+    }
+    fn_traerProcesos(fechaString);
+});
+
+onMounted(() => {
+    fn_traerProcesos(fechaHoy);
+});
 </script>
 
 <template>
-    <!-- Simulación de Loading -->
-    <div v-show="cargando" class="absolute top-0 left-0 w-full h-full bg-white z-50 flex justify-center items-center">
-        <div class="flex flex-col justify-center items-center">
-            <p class="text-sm font-medium">Cargando...</p>
-            <div class="flex">
-                <div class="loader"></div>
-                <div class="loader"></div>
-            </div>
-        </div>
-    </div>
-    <!-- ==================== -->
     <div class="flex justify-center md:justify-between items-center flex-wrap gap-4 mb-4">
         <h2 class="font-bold text-xl w-full md:w-auto">Reporte por Proceso</h2>
     </div>
@@ -211,36 +223,51 @@ function fn_formatoFecha(fecha) {
             <DatePicker v-model="fechaFiltro" showIcon fluid iconDisplay="input" inputId="fechaFiltro" dateFormat="dd/mm/yy"/>
         </div>
     </div>
-    <!-- <div class="flex justify-end items-center mb-4">
-        <Button icon="fa-regular fa-file-excel" class="w-full md:w-auto" severity="info" label="Exportar a Excel"/>
-    </div> -->
-    <div class="flex flex-col">
+    <div class="flex flex-col relative">
+        <!-- Simulación de Loading -->
+        <div v-show="cargando" class="absolute top-0 left-0 w-full h-full bg-white z-50 flex justify-center items-center">
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-sm font-medium">Cargando...</p>
+                <div class="flex">
+                    <div class="loader"></div>
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+        <!-- ==================== -->
         <div class="-m-1.5 overflow-x-auto">
             <div class="p-1.5 min-w-full inline-block align-middle">
                 <div class="border rounded-lg overflow-hidden border-black">
                     <table class="min-w-full divide-y divide-gray-200" id="tablaReportePorProceso">
                         <caption class="bg-blue-600 p-3 text-center text-base font-medium text-white uppercase">Reporte por Proceso</caption>
-                        <thead class="bg-blue-600">
-                            <tr>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">N&uacute;mero de Proceso</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">Fecha Inicio</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">Hora Inicio</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">Fecha Termino</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">Hora Termino</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 border-r text-white uppercase">Acumulado</th>
-                                <th class="p-3 text-left text-xs font-semibold bg-blue-600 text-white uppercase">Accciones</th>
+                        <thead class="bg-blue-600 text-white">
+                            <tr class="text-xs font-semibold uppercase">
+                                <th class="p-3 text-left border-r">N&uacute;mero de <br> Proceso</th>
+                                <th class="p-3 text-left border-r">Fecha Inicio</th>
+                                <th class="p-3 text-left border-r">Hora Inicio</th>
+                                <th class="p-3 text-left border-r">Fecha Término</th>
+                                <th class="p-3 text-left border-r">Hora Término</th>
+                                <th class="p-3 text-left border-r">Acumulado por <br> Colaboradores</th>
+                                <th class="p-3 text-left border-r">Extra de <br> Colaboradores</th>
+                                <th class="p-3 text-left border-r">Total <br> Acumulado</th>
+                                <th class="p-3 text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                            <tr v-if="!Object.keys(procesos).length">
+                                <td colspan="9" class="text-center">No hay datos</td>
+                            </tr>
                             <tr v-for="proceso in procesos" :key="proceso.idProceso">
-                                <td class="p-3 text-left border-r border-gray-300">{{ proceso.idProceso }}</td>
+                                <td class="p-3 text-center border-r border-gray-300">{{ proceso.idProceso }}</td>
                                 <td class="p-3 text-left border-r border-gray-300">{{ fn_formatoFecha(proceso.fechaInicio) }}</td>
                                 <td class="p-3 text-left border-r border-gray-300">{{ proceso.horainicio }}</td>
                                 <td class="p-3 text-left border-r border-gray-300">{{ fn_formatoFecha(proceso.fechaFin) }}</td>
                                 <td class="p-3 text-left border-r border-gray-300">{{ proceso.horaFin }}</td>
                                 <td class="p-3 text-left border-r border-gray-300">{{ proceso.acumulado }}</td>
+                                <td class="p-3 text-left border-r border-gray-300">{{ proceso.totalPesoExtra }}</td>
+                                <td class="p-3 text-left border-r border-gray-300">{{ parseFloat(proceso.acumulado) + parseFloat(proceso.totalPesoExtra) }}</td>
                                 <td class="p-3 text-left border-b border-gray-300 flex justify-center">
-                                    <Button icon="pi pi-search" class="p-button-rounded p-button-info" @click="fn_traerDetalleProceso(proceso.idProceso)"/>
+                                    <Button icon="pi pi-search" class="p-button-rounded p-button-info" @click="fn_traerDetalleProceso(proceso)"/>
                                 </td>
                             </tr>
                         </tbody>
@@ -250,7 +277,49 @@ function fn_formatoFecha(fecha) {
         </div>
     </div>   
     <hr class="my-10">
-    <div id="tablasDetalleProceso" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-12 relative">
+        <!-- Simulación de Loading -->
+        <div v-show="cargandoDetalle" class="absolute top-0 left-0 w-full h-full bg-white z-50 flex justify-center items-center">
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-sm font-medium">Cargando...</p>
+                <div class="flex">
+                    <div class="loader"></div>
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+        <!-- ==================== -->
+        <div v-if="detalleProceso" class="flex flex-col">
+            <div class="-m-1.5 overflow-x-auto">
+                <div class="p-1.5 min-w-full inline-block align-middle">
+                    <div class="border rounded-lg overflow-hidden border-black">
+                        <table class="min-w-full divide-y divide-gray-200" id="tablaReportePorProceso">
+                            <caption class="bg-yellow-400 text-black p-3 text-center text-base font-bold uppercase">Proceso N° {{ detalleProceso.idProceso }}</caption>
+                            <thead class="bg-yellow-400 text-black">
+                                <tr class="text-xs font-bold uppercase">
+                                    <th class="p-3 text-left border-r">Fecha Inicio</th>
+                                    <th class="p-3 text-left border-r">Fecha Término</th>
+                                    <th class="p-3 text-left border-r">Acumulado por <br> Colaboradores</th>
+                                    <th class="p-3 text-left border-r">Extra de <br> Colaboradores</th>
+                                    <th class="p-3 text-left border-r">Total <br> Acumulado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                <tr>
+                                    <td class="p-3 text-left border-r border-gray-300">{{ fn_formatoFecha(detalleProceso.fechaInicio) }} | {{ detalleProceso.horainicio }}</td>
+                                    <td class="p-3 text-left border-r border-gray-300">{{ fn_formatoFecha(detalleProceso.fechaFin) }} | {{ detalleProceso.horaFin }}</td>
+                                    <td class="p-3 text-left border-r border-gray-300">{{ detalleProceso.acumulado }}</td>
+                                    <td class="p-3 text-left border-r border-gray-300">{{ detalleProceso.totalPesoExtra }}</td>
+                                    <td class="p-3 text-left border-r border-gray-300">{{ parseFloat(detalleProceso.acumulado) + parseFloat(detalleProceso.totalPesoExtra) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tablasDetalleProceso" class="flex flex-col gap-8">
 
+        </div>
     </div> 
 </template>
