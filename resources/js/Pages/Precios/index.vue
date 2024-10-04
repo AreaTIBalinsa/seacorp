@@ -123,7 +123,7 @@ const fn_guardarPrecio = () => {
                         <div class="flex justify-center md:justify-between items-center flex-wrap gap-4">
                             <h2 class="font-bold text-xl w-full md:w-auto">Precios por Servis</h2>
                         </div>
-                        <DataTable id="tablaPrecios" v-model:filters="filters" stateStorage="session" stateKey="dt-state-demo-session" :value="filteredCustomers" paginator paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                        <DataTable id="tablaPrecios" v-model:filters="filters" stateStorage="session" stateKey="dt-state-precios" :value="filteredCustomers" paginator paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                         currentPageReportTemplate="{first} a {last} de {totalRecords}" :rows="10" :rowsPerPageOptions="[10, 20, 50]" :loading="loading" removableSort class="text-sm">
                             <template #header>
                                 <div class="flex justify-end gap-4 flex-wrap">

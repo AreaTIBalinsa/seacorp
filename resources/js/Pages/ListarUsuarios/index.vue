@@ -56,7 +56,7 @@ onMounted(() => {
                             <h2 class="font-bold text-xl w-full md:w-auto">Lista de Usuarios</h2>
                             <Button icon="fa-solid fa-user-plus" class="w-full md:w-auto" label="Agregar Personal" as="a" href="/listarusuarios/create"/>
                         </div>
-                        <DataTable id="tablaUsuarios" v-model:filters="filters" stateStorage="session" stateKey="dt-state-demo-session" :value="filteredCustomers" paginator paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                        <DataTable id="tablaUsuarios" v-model:filters="filters" stateStorage="session" stateKey="dt-state-usuarios" :value="filteredCustomers" paginator paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
                         currentPageReportTemplate="{first} a {last} de {totalRecords}" :rows="10" :rowsPerPageOptions="[10, 20, 50]" :loading="loading" removableSort class="text-sm">
                             <template #header>
                                 <div class="flex justify-end gap-4 flex-wrap">
