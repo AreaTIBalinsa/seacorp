@@ -10,11 +10,7 @@ import Column from 'primevue/column';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
-import Tag from 'primevue/tag';
-import Select from 'primevue/select';
 import Button from 'primevue/button';
-import { router } from '@inertiajs/vue3';
-import Dialog from 'primevue/dialog';
 import { DatosUsuarios } from '@/Consultas/Usuarios/DatosUsuarios';
 
 // Table
@@ -42,7 +38,6 @@ onMounted(() => {
         console.error('Error al obtener los datos', error);
     });
 });
-
 </script>
 
 <template>
@@ -97,6 +92,11 @@ onMounted(() => {
                             <Column header="Email" field="email" sortable headerStyle="background-color: #0060ff; color: white;">
                                 <template #body="{ data }">
                                     {{ data.email }}
+                                </template>
+                            </Column>
+                            <Column header="Rol" field="rol" sortable headerStyle="background-color: #0060ff; color: white;">
+                                <template #body="{ data }">
+                                    {{ data.rol }}
                                 </template>
                             </Column>
                         </DataTable>

@@ -16,18 +16,25 @@ class UsuariosController extends Controller
             SELECT 
             id,
             name,
-            email
+            email,
+            (SELECT roles.name FROM model_has_roles 
+                INNER JOIN roles ON roles.id = model_has_roles.role_id 
+                WHERE model_has_roles.model_id = users.id 
+                LIMIT 1) AS rol
             FROM users
         ');
 
         return response()->json($datos);
     }
-    public function store(UserRequest $request)
-    {
-        User::create($request->validated());
-        $request->user()->save();
- 
-        return Redirect()->back();
+    
+    public function store(UserRequest $request){
+        $user = User::create($request->validated());
+
+        if ($request->filled('rol')) {
+            $user->assignRole($request->input('rol'));
+        }
+
+        return redirect()->route('listarusuarios.index')->with('success', 'Usuario registrado correctamente.');
     }
     
 }

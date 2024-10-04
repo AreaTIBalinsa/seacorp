@@ -95,7 +95,7 @@ const ocultarReportes = () => {
                                         </template>
                                         <template #footer>
                                             <div class="flex gap-4 mt-1">
-                                                <Button label="Ir a Reporte por Proceso" class="w-full" @click="mostrarProceso" severity="info"/>
+                                                <Button label="Ir a Reporte por Proceso" class="w-full" @click="mostrarProceso" severity="danger"/>
                                             </div>
                                         </template>
                                     </Card>

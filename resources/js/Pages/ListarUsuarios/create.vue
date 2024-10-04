@@ -1,26 +1,17 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-import RadioButton from 'primevue/radiobutton';
 import InputText from 'primevue/inputtext';
-import { ref, onMounted } from 'vue';
-import InputMask from 'primevue/inputmask';
 import Button from 'primevue/button';
-import Select from 'primevue/select';
 import { router } from '@inertiajs/vue3';
-import { show_alerta, show_confirmacion } from '@/utils/alertasSwal';
-
-const props = defineProps({
-    users: {
-        type: Object
-    }
-});
+import { show_alerta } from '@/utils/alertasSwal';
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    rol: ''
 });
 
 const submitForm = () => {
@@ -81,6 +72,16 @@ const btnCancelar = () => {
                                     <label for="password_confirmation" class="font-bold block mb-2">Confirmar Contraseña</label>
                                     <InputText id="password_confirmation" autocomplete="off" class="w-full" v-model="form.password_confirmation" type="password" placeholder="Ingrese Nuevamente" />
                                     <span v-if="form.errors.password_confirmation" class="text-red-500 text-sm">{{ form.errors.password_confirmation }}</span>
+                                </div>
+                                <div>
+                                    <label for="rol" class="font-bold block mb-2">Rol</label>
+                                    <select id="role" class="w-full border-[#cbd5e1] rounded-lg text-[#334155]" v-model="form.rol">
+                                        <option value="" disabled selected>Seleccione un rol</option>
+                                        <option value="Administradores">Administradores</option>
+                                        <option value="Recursos Humanos">Recursos Humanos</option>
+                                        <option value="Pesadores">Pesadores</option>
+                                    </select>
+                                    <span v-if="form.errors.rol" class="text-red-500 text-sm">{{ form.errors.rol }}</span>
                                 </div>
                             </div>
                             <div class="flex flex-col md:flex-row w-full justify-end items-end gap-x-4 gap-y-4">

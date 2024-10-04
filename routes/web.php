@@ -28,11 +28,7 @@ Route::middleware(['auth:web'])->group(function () {
     // Route::resource('permisos', PermisoController::class);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
@@ -48,8 +44,9 @@ Route::middleware([
         return Inertia::render('ListarUsuarios/create');
     })->name('listarusuarios.create');
 
+    Route::get('/fn_traerPermisos', [UsuariosController::class, 'traerPermisos']);
     Route::get('/fn_traerDatosUsuarios', [UsuariosController::class, 'traerDatosUsuarios']);
-    route::post('/fn_registrarDatosdeUsuario', [UsuariosController::class, 'store'])->name('fn_registrarDatosdeUsuario');
+    Route::post('/fn_registrarDatosdeUsuario', [UsuariosController::class, 'store'])->name('fn_registrarDatosdeUsuario');
 
     // ===== Reportes =====
 
@@ -76,6 +73,7 @@ Route::middleware([
     Route::get('/personal/edit-personal', [PersonalController::class, 'edit'])->name('personal.edit-personal');
     Route::put('/personal/update/{idEmpleado}', [PersonalController::class, 'update'])->name('personal.update');
     Route::post('/personal/store', [PersonalController::class, 'store'])->name('personal.store');
+    Route::get('/fn_crearNuevoServis', [PersonalController::class, 'crearNuevoServis']);
 
     Route::get('/fn_traerDatosTrabajadores', [PersonalController::class, 'traerDatosTrabajadores']);
     Route::get('/fn_traerDatosServis', [PersonalController::class, 'traerDatosServis']);

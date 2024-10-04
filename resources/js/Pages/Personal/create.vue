@@ -7,8 +7,13 @@ import Button from 'primevue/button';
 import { ref, onMounted, watch } from 'vue';
 import { DatosServis } from '@/Consultas/Personal/DatosServis';
 import { useForm, usePage } from '@inertiajs/vue3';
+import Dialog from 'primevue/dialog';
 import $ from 'jquery';
+
 const page = usePage();
+const visible = ref(false);
+const servis = ref([]);
+const nombreServis = ref(null);
 
 const form = useForm({
     nombresEmpleado: "",
@@ -26,17 +31,9 @@ const form = useForm({
     user_registro: page.props.auth.user.id,
 })
 
-const servis = ref([]);
-
 const documentos = ref([
     { tipoDocumento: 'DNI', valor: 'DNI' },
     { tipoDocumento: 'RUC', valor: 'RUC' },
-]);
-
-const estados = ref([
-    { estados: 'Activo', valor: 'Activo' },
-    { estados: 'Suspendido', valor: 'Suspendido' },
-    { estados: 'Inhabilitado', valor: 'Inhabilitado' },
 ]);
 
 onMounted(() => {
@@ -82,6 +79,30 @@ watch(() => form.grupo, (newValue) => {
     });
 });
 
+const fn_guardarServis = () => {
+    $.ajax({
+        url: '/fn_crearNuevoServis',
+        method: 'GET',
+        data: {
+            nombreServis: nombreServis.value
+        },
+        success: function (response) {
+            if(response.success) {
+                visible.value = false;
+                nombreServis.value = null;
+                DatosServis.obtenerDatosServis().then((respuesta) => {
+                    servis.value = respuesta;
+                }).catch((error) => {
+                    console.error('Error al obtener los datos', error);
+                });
+            }
+        },
+        error: function (error) {
+            console.error('Error al obtener los datos', error);
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -98,12 +119,13 @@ watch(() => form.grupo, (newValue) => {
                     <div class="px-4 py-8">
                         <form @submit.prevent="agregarPersonal">
                             <div class="flex justify-between items-center mb-5">
-                                <div class="flex ">
+                                <div class="flex items-end gap-2">
                                     <div class="flex flex-col gap-y-2">
                                         <label class="text-gray-500 text-xs">Servis</label>
                                         <Select v-model="form.grupo" id="grupo" :options="servis" optionValue="idGrupo" optionLabel="nombreGrupo" placeholder="Selecciona Servis" checkmark :highlightOnSelect="false" class="w-full md:w-56 text-black" />
                                         <span v-if="form.errors.grupo" class="text-red-500 text-xs">{{ form.errors.grupo }}</span>
                                     </div>
+                                    <Button icon="fa-solid fa-plus" class="w-full" @click="visible = true" severity="success"/>
                                 </div>
                                 <div class="flex flex-col gap-y-2">
                                     <label for="codigo" class="text-gray-500 text-xs">Codigo</label>
@@ -156,5 +178,16 @@ watch(() => form.grupo, (newValue) => {
                 </div>
             </div>
         </div>
+
+        <Dialog v-model:visible="visible" modal header="Nuevo Servis" :style="{ width: '25rem' }">
+            <div class="flex items-center gap-2 mb-4">
+                <label for="nombreServis" class="font-semibold">Nombre del<br>Servis</label>
+                <InputText id="nombreServis" class="flex-auto" autocomplete="off" v-model="nombreServis" autofocus/>
+            </div>
+            <div class="flex justify-end gap-2">
+                <Button type="button" label="Cancelar" severity="secondary" @click="visible = false"></Button>
+                <Button type="button" label="Guardar" @click="fn_guardarServis"></Button>
+            </div>
+        </Dialog>
     </AppLayout>
 </template>

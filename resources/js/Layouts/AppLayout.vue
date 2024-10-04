@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
+import { usePage } from '@inertiajs/vue3';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
@@ -16,6 +16,33 @@ const showingNavigationDropdown = ref(false);
 const logout = () => {
     router.post(route('logout'));
 };
+
+const page = usePage();
+const permissions = page.props.user.permissions;
+const currentRoute = page.url;
+
+/**
+ * Verifica si el usuario tiene permiso para acceder a la ruta actual.
+ * Si no tiene permiso, redirige a la ruta /dashboard.
+ */
+const checkPermissions = () => {
+    if (currentRoute === '/personal' && !permissions.includes('personal.index')) {
+        router.get('/dashboard');
+    }
+    if (currentRoute === '/listarusuarios' && !permissions.includes('listarusuarios.index')) {
+        router.get('/dashboard');
+    }
+    if (currentRoute === '/precios' && !permissions.includes('precios.index')) {
+        router.get('/dashboard');
+    }
+    if (currentRoute === '/reportes' && !permissions.includes('reportes.index')) {
+        router.get('/dashboard');
+    }
+};
+
+onMounted(() => {
+    checkPermissions();
+});
 </script>
 
 <template>
@@ -40,16 +67,16 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-base">
                                     Inicio
                                 </NavLink>
-                                <NavLink :href="route('personal.index')" :active="route().current('personal.*')" class="text-base">
+                                <NavLink v-if="$page.props.user.permissions.includes('personal.index')" :href="route('personal.index')" :active="route().current('personal.*')" class="text-base">
                                     Personal
                                 </NavLink>
-                                <NavLink :href="route('reportes.index')" :active="route().current('reportes.*')" class="text-base">
+                                <NavLink v-if="$page.props.user.permissions.includes('reportes.index')" :href="route('reportes.index')" :active="route().current('reportes.*')" class="text-base">
                                     Reportes
                                 </NavLink>
-                                <NavLink :href="route('precios.index')" :active="route().current('precios.*')" class="text-base">
+                                <NavLink v-if="$page.props.user.permissions.includes('precios.index')" :href="route('precios.index')" :active="route().current('precios.*')" class="text-base">
                                     Precios
                                 </NavLink>
-                                <NavLink :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')" class="text-base">
+                                <NavLink v-if="$page.props.user.permissions.includes('listarusuarios.index')" :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')" class="text-base">
                                     Usuarios
                                 </NavLink>
                             </div>
@@ -134,16 +161,16 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Inicio
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('personal.index')" :active="route().current('personal.*')">
+                        <ResponsiveNavLink v-if="$page.props.user.permissions.includes('personal.index')" :href="route('personal.index')" :active="route().current('personal.*')">
                             Personal
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('reportes.index')" :active="route().current('reportes.*')">
+                        <ResponsiveNavLink v-if="$page.props.user.permissions.includes('reportes.index')" :href="route('reportes.index')" :active="route().current('reportes.*')">
                             Reportes
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('precios.index')" :active="route().current('precios.*')">
+                        <ResponsiveNavLink v-if="$page.props.user.permissions.includes('precios.index')" :href="route('precios.index')" :active="route().current('precios.*')">
                             Precios
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')">
+                        <ResponsiveNavLink v-if="$page.props.user.permissions.includes('listarusuarios.index')" :href="route('listarusuarios.index')" :active="route().current('listarusuarios.*')">
                             Usuarios
                         </ResponsiveNavLink>
                     </div>

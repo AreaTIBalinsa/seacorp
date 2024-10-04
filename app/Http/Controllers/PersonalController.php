@@ -164,6 +164,34 @@ class PersonalController extends Controller
         ', [$rangoMin, $grupo]);
     
         return response()->json($datos);
+    }
+    
+    public function crearNuevoServis(Request $request) {
+        $nombreServis = $request->input('nombreServis');
+    
+        $rango = DB::select('
+            SELECT rango 
+            FROM tb_grupos 
+            ORDER BY idGrupo DESC 
+            LIMIT 1
+        ');
+    
+        if (empty($rango)) {
+            $rangoMin = 0;
+        } else {
+            $rangoValores = explode('-', $rango[0]->rango);
+            $rangoMin = (int)$rangoValores[1];
+        }
+
+        $rangoMax = $rangoMin + 1000;
+        $rangoNuevo = $rangoMin . '-' . $rangoMax;
+
+        $datos = DB::insert('
+            INSERT INTO tb_grupos (nombreGrupo, rango) 
+            VALUES (?, ?)
+        ', [$nombreServis, $rangoNuevo]);
+
+        return response()->json(['success' => $datos]);
     }    
 
 }

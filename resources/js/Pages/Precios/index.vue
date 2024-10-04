@@ -10,10 +10,8 @@ import Column from 'primevue/column';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
-import Tag from 'primevue/tag';
-import Select from 'primevue/select';
+import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
-import { router } from '@inertiajs/vue3';
 import { PreciosServis } from '@/Consultas/Precios/PreciosServis';
 import Dialog from 'primevue/dialog';
 
@@ -199,7 +197,7 @@ const fn_guardarPrecio = () => {
                             <span class="text-surface-500 dark:text-surface-400 block mb-5">Servis {{ nombreServis }}, presentación : {{ presentacionServis }}</span>
                             <div class="flex items-center gap-2 mb-4">
                                 <label for="precioModal" class="font-semibold">Nuevo Precio</label>
-                                <InputText id="precioModal" class="flex-auto" autocomplete="off" v-model="nuevoPrecioPresentacion" autofocus/>
+                                <InputNumber  id="precioModal" inputId="locale-us" locale="en-US" :minFractionDigits="2" fluid class="flex-auto" autocomplete="off" v-model="nuevoPrecioPresentacion" autofocus/>
                             </div>
                             <div class="flex justify-end gap-2">
                                 <Button type="button" label="Cancelar" severity="secondary" @click="visible = false"></Button>

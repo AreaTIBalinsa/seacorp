@@ -18,4 +18,13 @@ export default defineConfig({
             },
         }),
     ],
+    // ==== Descomentar esto para servidor local ====
+    server: {
+        host: '192.168.100.52',
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: '192.168.100.52',
+        },
+    },
 });
