@@ -177,6 +177,12 @@ const fn_extraerDatosEditarPersonal = (data) => {
 #tablaPersonal .p-datatable-header{
     padding: 16px 0 !important;
 }
+#tablaPersonal .p-datatable-column-title{
+    white-space: nowrap !important;
+}
+#tablaPersonal .p-datatable-tbody > tr > td{
+    white-space: nowrap !important;
+}
 #tablaPersonal .p-datatable-sort-icon{
     color: white !important;
 }

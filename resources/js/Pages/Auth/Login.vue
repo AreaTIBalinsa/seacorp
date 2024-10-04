@@ -30,9 +30,9 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Login" />
 
-    <AuthenticationCard>
+    <AuthenticationCard class="flex justify-center items-center">
         <template #logo>
             <img src="/img/logoSeacorp.png" alt="" class="w-28"/>
         </template>

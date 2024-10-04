@@ -323,3 +323,9 @@ onMounted(() => {
         </div>
     </div> 
 </template>
+
+<style>
+#tablaReportePorProceso > thead > tr > th {
+    white-space: nowrap !important;
+}
+</style>

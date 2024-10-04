@@ -218,6 +218,12 @@ const fn_guardarPrecio = () => {
 #tablaPrecios .p-datatable-sort-icon{
     color: white !important;
 }
+#tablaPrecios .p-datatable-column-title{
+    white-space: nowrap !important;
+}
+#tablaPrecios .p-datatable-tbody > tr > td{
+    white-space: nowrap !important;
+}
 #tablaPrecios .p-datatable-tbody > tr > td{
     border: 1px solid #e2e8f0 !important;
     padding: 0 !important;

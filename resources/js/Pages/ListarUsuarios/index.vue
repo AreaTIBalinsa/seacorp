@@ -110,6 +110,13 @@ onMounted(() => {
 <style>
 #tablaUsuarios .p-datatable-header{
     padding: 16px 0 !important;
+    white-space: nowrap !important;
+}
+#tablaUsuarios .p-datatable-column-title{
+    white-space: nowrap !important;
+}
+#tablaUsuarios .p-datatable-tbody > tr > td{
+    white-space: nowrap !important;
 }
 #tablaUsuarios .p-datatable-sort-icon{
     color: white !important;
