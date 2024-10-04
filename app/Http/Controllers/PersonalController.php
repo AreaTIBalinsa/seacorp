@@ -182,16 +182,24 @@ class PersonalController extends Controller
             $rangoValores = explode('-', $rango[0]->rango);
             $rangoMin = (int)$rangoValores[1];
         }
-
+    
         $rangoMax = $rangoMin + 1000;
         $rangoNuevo = $rangoMin . '-' . $rangoMax;
-
-        $datos = DB::insert('
+    
+        DB::insert('
             INSERT INTO tb_grupos (nombreGrupo, rango) 
             VALUES (?, ?)
         ', [$nombreServis, $rangoNuevo]);
+    
+        $idDelGrupo = DB::getPdo()->lastInsertId();
 
-        return response()->json(['success' => $datos]);
-    }    
+        DB::insert('
+            INSERT INTO tb_precio_x_presentacion 
+            (idGrupo, preTalloSolo, preTalloCoral, preMediaValvaTS, preMediaValvaTC, preOtros) 
+            VALUES (?, 0, 0, 0, 0, 0)
+        ', [$idDelGrupo]);
+    
+        return response()->json(['success' => true]);
+    }  
 
 }
