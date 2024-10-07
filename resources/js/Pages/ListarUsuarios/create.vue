@@ -1,9 +1,9 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head, Link, router } from '@inertiajs/vue3';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import { router } from '@inertiajs/vue3';
+import NavLink from '@/Components/NavLink.vue';
 import { show_alerta } from '@/utils/alertasSwal';
 
 const form = useForm({
@@ -89,6 +89,39 @@ const btnCancelar = () => {
                                 <Button type="submit" icon="fa-solid fa-save" class="w-full md:w-auto" label="Guardar"/>
                             </div>
                         </form>
+                        <div v-if="form.rol" class="border mt-4 p-4 rounded-lg pointer-events-none">
+                            <h2 class="font-bold mb-2 text-base">Con el rol {{ form.rol }} tienes acceso a:</h2>
+                            <hr>
+                            <div class="flex justify-between h-16">
+                                <div class="flex">
+                                    <!-- Logo -->
+                                    <div class="shrink-0 flex items-center">
+                                        <Link>
+                                            <img src="/img/logo.png" alt="" width="48" height="48">
+                                        </Link>
+                                    </div>
+
+                                    <!-- Navigation Links -->
+                                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                        <NavLink v-if="(form.rol == 'Administradores') || (form.rol == 'Recursos Humanos') || (form.rol == 'Pesadores')" :active="route().current('listarusuarios.*')" class="text-base">
+                                            Inicio
+                                        </NavLink>
+                                        <NavLink v-if="(form.rol == 'Administradores') || (form.rol == 'Recursos Humanos') || (form.rol == 'Pesadores')" class="text-base">
+                                            Personal
+                                        </NavLink>
+                                        <NavLink v-if="(form.rol == 'Administradores') || (form.rol == 'Recursos Humanos')" class="text-base">
+                                            Reportes
+                                        </NavLink>
+                                        <NavLink v-if="(form.rol == 'Administradores') || (form.rol == 'Recursos Humanos')" class="text-base">
+                                            Precios
+                                        </NavLink>
+                                        <NavLink v-if="(form.rol == 'Administradores')" class="text-base">
+                                            Usuarios
+                                        </NavLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
